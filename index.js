@@ -16,6 +16,7 @@ app.post('/sandwiches', async function(req, res) {
 
 	catch (error) {
 		console.log(error);
+		res.status(400).send("invalid body");
 	}
 })
 
