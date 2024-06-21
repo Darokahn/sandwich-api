@@ -26,13 +26,22 @@ app.get('/sandwiches', async function(req, res) {
 		res.status(200).json(data);
 	}
 
-	catch (error) {console.log(error);}
+	catch (error) {
+		console.log(error);
+		res.status(404).send("not found");
+	}
 })
 
 app.get('/sandwiches/:id', async function(req, res) {
-	let id = req.params.id;
-	let sandwich = await Sandwich.findById(id).exec();
-	res.status(200).json(sandwich);
+	try {
+		let id = req.params.id;
+		let sandwich = await Sandwich.findById(id).exec();
+		res.status(200).json(sandwich);
+	}
+	catch (error) {
+		console.log("ID not found");
+		res.status(400).send("Invalid ID");
+	}
 })
 
 app.put('/sandwiches/:id', async function(req, res) {
@@ -50,9 +59,15 @@ app.put('/sandwiches/:id', async function(req, res) {
 })
 
 app.delete('/sandwiches/:id', async function(req, res) {
-	let id = req.params.id;
-	await Sandwich.findByIdAndDelete(id);
-	res.status(200).send("deleted " + id);
+	try {
+		let id = req.params.id;
+		await Sandwich.findByIdAndDelete(id);
+		res.status(200).send("deleted " + id);
+	}
+	catch (error) {
+		console.log(error);
+		res.status(404).send("Invalid ID");
+	}
 })
 
 app.listen(process.env.PORT || 8080);
