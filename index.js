@@ -2,9 +2,6 @@ const {Sandwich} = require("./model.js");
 const express = require('express');
 const cors = require('cors');
 
-
-console.log(Sandwich);
-
 const app = express();
 
 app.use(express.json());
@@ -25,7 +22,6 @@ app.post('/sandwiches', async function(req, res) {
 app.get('/sandwiches', async function(req, res) {
 	try {
 		let data = await Sandwich.find();
-		console.log(data)
 		res.status(200).json(data);
 	}
 
@@ -33,7 +29,6 @@ app.get('/sandwiches', async function(req, res) {
 })
 
 app.get('/sandwiches/:id', async function(req, res) {
-	console.log("getting sandwich by ID");
 	let id = req.params.id;
 	let sandwich = await Sandwich.findById(id).exec();
 	res.status(200).json(sandwich);
@@ -41,7 +36,6 @@ app.get('/sandwiches/:id', async function(req, res) {
 
 app.put('/sandwiches/:id', async function(req, res) {
 	try {
-		console.log("updating");
 		let body = req.body;
 		let id = req.params.id;
 		await Sandwich.findByIdAndUpdate(id, body);
@@ -55,7 +49,6 @@ app.put('/sandwiches/:id', async function(req, res) {
 })
 
 app.delete('/sandwiches/:id', async function(req, res) {
-	console.log("deleting");
 	let id = req.params.id;
 	await Sandwich.findByIdAndDelete(id);
 	res.status(200).send("deleted");
